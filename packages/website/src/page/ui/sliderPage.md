@@ -12,9 +12,19 @@ Check out how Slider is wired up in a [real Foldkit app](https://github.com/fold
 
 Slider is headless. Your `toView` callback controls all markup and styling. The component hands back attribute groups for the root, track, filled track, thumb, label, and an optional hidden input for form submission.
 
-::Demo{name="slider"}
+### Horizontal
+
+Horizontal is the default orientation. The thumb's center sits on the value point and may extend beyond the track at either end.
+
+::Demo{name="horizontal"}
 
 ::Snippet{name="uiSliderBasic" label="slider example"}
+
+### Vertical
+
+Pass `orientation: 'Vertical'` to map pointer movement along the Y axis, with `min` at the bottom and `max` at the top. This example also uses `thumbAlignment: 'Edge'` and provides the rendered `thumbSize` so the thumb remains inside the track.
+
+::Demo{name="vertical"}
 
 ## Subscriptions
 
