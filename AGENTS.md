@@ -81,6 +81,7 @@ Match the implementation style to the subsystem and the behavior being modeled. 
 - Use `pipe` when the value being transformed should remain the subject of clear left-to-right data flow. A single transformation is valid when that order carries meaning, as in `pipe(dialogClose, Update.withOutMessage(outMessage))`. Call the function directly when `pipe` only rearranges an ordinary call.
 - In multi-line `pipe` chains, put the data being piped on its own line.
 - Use Effect module functions over native methods in pipes (`Array.map`, `String.includes`, `String.indexOf`, etc.). Native methods are fine when calling directly on a named variable.
+- Use `Predicate.isString` for string guards, never `typeof value === 'string'`.
 - Import Effect modules by their PascalCase name (`Array`, `String`, `Number`, `Function`, `Option`). Qualify a same-named JavaScript or TypeScript global through `globalThis`, such as `globalThis.String`, `globalThis.Array`, or `globalThis.Record`. When an existing local or public binding must retain the module name, give the Effect import an explicit `Effect` prefix, such as `Order as EffectOrder`. Use a named `import type` when an Effect submodule contributes one type and none of its runtime API is used. Use a namespace import when accessing the module's values or multiple exports.
 - Never use sentinel values to signal absence (`-1` from `.indexOf()`, `null`, empty strings, `NaN`). Use `Option`-returning helpers like `String.indexOf`, `Array.findFirst`, `Option.fromNullishOr`.
 - Never `Option.match` with `onNone: Function.constVoid`. Use `Option.isSome` with an explicit `if`.
@@ -114,7 +115,7 @@ Don't add inline or block comments to explain code. If code needs explanation, r
 - Section headers: `// MODEL`, `// MESSAGE`, `// INIT`, `// UPDATE`, `// VIEW`, `// COMMAND`, and short descriptive headers for sections outside that set (`// SHARED STYLES`, `// TABLE OF CONTENTS`).
 - TSDoc (`/** ... */`) on all public exports of a published package (`packages/*`). An `export const` in `examples/` is module wiring so `entry.ts` and scene tests can import it, not public API, and takes a `// NOTE:` like any other explanatory comment.
 - `// NOTE:` comments, with a high bar. Only for behavior that would mislead a careful reader (timing dependency, upstream bug workaround, browser quirk). Not for normal patterns, state machine shapes, framework idioms, or what a function does.
-- The first source comment in a bad or good documentation snippet, marked with ❌ or ✅ using the language's comment syntax.
+- The first source comment in a documentation snippet that is explicitly one side of a bad/good comparison, marked with ❌ or ✅ using the language's comment syntax. Normal example snippets do not take an emoji label comment.
 
 ## Documentation Snippets
 
