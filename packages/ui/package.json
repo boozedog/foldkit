@@ -140,10 +140,10 @@
     "@foldkit/vite-plugin": "workspace:*",
     "effect": "4.0.0-rc.117",
     "foldkit": "workspace:*",
-    "happy-dom": "^20.11.13",
+    "happy-dom": "^20.14.5",
     "rimraf": "^6.1.3",
     "typescript": "^7.0.2",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.2"
   },
   "keywords": [
     "foldkit",

@@ -15,7 +15,7 @@
     "effect": "4.0.0-rc.117"
   },
   "devDependencies": {
-    "@types/node": "^26.4.0",
+    "@types/node": "26.4.0",
     "typescript": "^7.0.2"
   }
 }

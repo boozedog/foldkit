@@ -29,19 +29,19 @@
   },
   "dependencies": {
     "@effect/platform-node": "4.0.0-rc.117",
-    "magic-string": "^1.2.3",
+    "magic-string": "^1.4.2",
     "ws": "^8.21.3"
   },
   "devDependencies": {
-    "@types/node": "^26.4.0",
+    "@types/node": "26.4.0",
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
     "effect": "4.0.0-rc.117",
     "foldkit": "workspace:*",
-    "happy-dom": "^20.11.13",
+    "happy-dom": "^20.14.5",
     "rimraf": "^6.1.3",
     "typescript": "^7.0.2",
-    "vite": "^8.2.2",
+    "vite": "^8.3.1",
     "vite-host": "npm:vite@8.2.1",
     "vitest": "^4.1.11"
   },
