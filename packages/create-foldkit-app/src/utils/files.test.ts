@@ -160,35 +160,7 @@ describe('rendering templates', () => {
     )
   })
 
-  it('leaves coordinated build identity generation to the plugin', () => {
-    for (const rendering of ['ssg', 'ssr']) {
-      const packageJson = readTemplatePackageJson(
-        `rendering/${rendering}/package.json`,
-      )
-      expect(packageJson.scripts['build']).toBe('vite build')
-
-      const viteConfig = readTemplateFile(
-        `rendering/${rendering}/vite.config.ts`,
-      )
-      const clientEntry = readTemplateFile(
-        `rendering/${rendering}/src/entry.ts`,
-      )
-      const serverEntry = readTemplateFile(
-        `rendering/${rendering}/src/entry.server.ts`,
-      )
-
-      expect(viteConfig).not.toContain('randomUUID')
-      expect(viteConfig).not.toContain('FOLDKIT_BUILD_ID')
-      expect(viteConfig).not.toContain('buildId')
-      expect(clientEntry).not.toContain('FOLDKIT_BUILD_ID')
-      expect(serverEntry).not.toContain('FOLDKIT_BUILD_ID')
-      expect(serverEntry).not.toContain('buildId:')
-    }
-  })
-
   it('documents the build id contract in the generated README', () => {
-    // The id is a deployment's, not Foldkit's, so a generated project has to say
-    // what it is before its author has to ask.
     for (const rendering of ['ssg', 'ssr']) {
       const readme = applyPackageManager(
         readTemplateFile(`rendering/${rendering}/README.md`),

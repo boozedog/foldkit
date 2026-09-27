@@ -618,9 +618,6 @@ const NO_HYDRATION_ROOT = resolve(
 const VITE_BIN = resolve(import.meta.dirname, '../node_modules/.bin/vite')
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
 
-// The exported config is the path applications run, so one CLI build proves
-// its client and server environments join the same identity session. The
-// programmatic case below separately proves that session ends with the build.
 describe('the build id across environments', () => {
   it('compiles one id into both bundles of a single build', async () => {
     onTestFinished(async () => {
@@ -785,12 +782,6 @@ describe('the build id across environments', () => {
     })
 
     await builder.buildApp()
-
-    const serverBundle = await readFile(
-      resolve(NO_HYDRATION_ROOT, serverOutDir, 'fetch.js'),
-      'utf8',
-    )
-    expect(serverBundle).not.toMatch(UUID)
   })
 
   it('generates a fresh coordinated id for a later build in one process', async () => {

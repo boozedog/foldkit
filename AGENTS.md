@@ -142,6 +142,11 @@ Don't add inline or block comments to explain code. If code needs explanation, r
 - When one file tests both a story and a scene, import the namespaces instead (`import { Scene, Story } from 'foldkit'`) so `Story.given` and `Scene.given` stay distinguishable. `packages/ui/` and `packages/foldkit/` keep the namespace form throughout, since their tests routinely mix both.
 - The step that sets the initial Model is `given`, not `with`. `with` is a reserved word and cannot be a named import binding.
 
+## Session Echoes
+
+- Do not leave session echoes in code, tests, comments, documentation, or names. A session echo records the path taken during the current change instead of a durable contract: assertions that abandoned identifiers or implementations are absent, notes about discarded attempts, or references to debugging and review conversation.
+- Regression tests must exercise a durable contract or reproduce a user-visible failure through supported inputs and outputs. When replacing an implementation, delete obsolete structural assertions instead of inverting them to assert that the old implementation is gone.
+
 ## Choosing Lifecycle Primitives
 
 Five primitives: Command, Mount, Subscription, ManagedResource, CustomElement. Pick by what causes the side effect. The `skills/foldkit` skill and the docs at `packages/website/src/page/core/` cover this in depth. Read them when ambiguous. Quick rule:

@@ -324,9 +324,6 @@ const automaticIdentityFrom = async (
       FOLDKIT_BUILD_TOKEN_URL,
     )
   expect(transformedClientToken?.code).toContain(JSON.stringify(buildId))
-  expect(transformedClientToken?.code).not.toContain(
-    'foldkitBuildIdPlaceholder()',
-  )
 
   return buildId ?? ''
 }

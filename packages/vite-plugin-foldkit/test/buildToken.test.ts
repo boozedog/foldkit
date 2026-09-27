@@ -177,7 +177,5 @@ describe('separately invoked aggregate builds', () => {
     const server = readBuiltFiles(serverOutput)
     expect(client).toContain(buildId)
     expect(server).toContain(buildId)
-    expect(client).not.toContain('foldkitBuildIdPlaceholder()')
-    expect(server).not.toContain('foldkitBuildIdPlaceholder()')
   })
 })

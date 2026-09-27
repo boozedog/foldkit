@@ -47,19 +47,6 @@ describe('server-rendered example build scripts', () => {
       expect(EXAMPLE_FILE_EXTENSIONS.has(extname(configFileName))).toBe(true)
       expect(INCLUDED_EXTENSIONS.has(extname(configFileName))).toBe(true)
     })
-
-    it(`leaves build identity generation to Foldkit in every ${slug} config`, () => {
-      for (const fileName of ['vite.config.ts', 'vite.config.playground.ts']) {
-        const config = exampleFile(slug, fileName)
-        expect(config, fileName).toContain(
-          "serverEntry: '/src/entry.server.ts'",
-        )
-        expect(config, fileName).toMatch(/build: (?:true|\{ prerender:)/)
-        expect(config, fileName).not.toContain('FOLDKIT_BUILD_ID')
-        expect(config, fileName).not.toContain('randomUUID')
-        expect(config, fileName).not.toContain('buildId')
-      }
-    })
   }
 
   it('retains the executable the transformed SSG build invokes', async () => {
