@@ -1,5 +1,71 @@
 # @foldkit/ui
 
+## 0.164.0
+
+### Minor Changes
+
+- [#1456](https://github.com/foldkit/foldkit/pull/1456) [`4187988`](https://github.com/foldkit/foldkit/commit/4187988d594061aa242d4d40d87747e1ae5f8997) Thanks [@wmaurer](https://github.com/wmaurer)! - Keep an Animation leave running when it interrupts an enter. Previously, if an element was hidden while its enter transition was still running, it could be removed before its leave finished. The browser cancels the enter transition when the leave starts. The Command that waits for the enter then finishes and returns `EndedAnimation`. Animation treated this as the end of the leave and emitted `TransitionedOut` too early. Showing an element during its leave had the same problem the other way round. Dialog, Menu, Popover, Listbox, Combobox, and Toast use Animation, so they are fixed too.
+
+  The Animation Model has a new `transitionGeneration` field. `show` and `hide` increase it each time they start an enter or leave transition. `WaitForPaint` and `WaitForAnimationSettled` put this generation in their result Messages. If the generation in a result is not the current one, update ignores the result.
+
+  This is a breaking change. These public types and constructors change:
+
+  - `Animation.Model` has a new `transitionGeneration: number` field. `Animation.init` sets it to `0`. Code that builds an Animation Model by hand, such as a test fixture, needs to add it.
+  - `Animation.Message.CompletedWaitForPaint` and `Animation.Message.EndedAnimation` now take `{ generation }`.
+  - `Animation.WaitForPaint` now takes `{ generation }`, and `Animation.WaitForAnimationSettled` takes `{ id, generation }`.
+  - `Animation.OutMessage.StartedLeaveAnimating` now carries `{ generation }`, the generation of the leave that just started.
+  - The `DetectMovementOrAnimationEnd` Commands exported by Menu, Popover, Listbox, and Combobox now take `{ id, generation }`.
+
+  `Animation.defaultLeaveCommand(model)` reads the generation from the Model, so a parent that uses it needs no change. A parent with its own leave Command takes the generation from `StartedLeaveAnimating` and returns it in `EndedAnimation`:
+
+  ```ts
+  const WaitForPanelSettled = Command.define('WaitForPanelSettled', {
+    args: { generation: Schema.Number },
+    messages: [Animation.Message.EndedAnimation],
+    execute: ({ generation }) =>
+      Dom.waitForAnimationSettled('#drawer-panel').pipe(
+        Effect.as(Animation.Message.EndedAnimation({ generation })),
+      ),
+  })
+  ```
+
+  ```ts
+  const foldAnimationOutMessage = (
+    outMessage: Animation.OutMessage,
+    { liftCommand }: Update.FoldContext<Animation.Message, Message>,
+  ) =>
+    Animation.OutMessage.match<Update.Step<Model, Message>>(outMessage, {
+      StartedLeaveAnimating:
+        ({ generation }) =>
+        model => ({
+          model,
+          commands: [liftCommand(WaitForPanelSettled({ generation }))],
+        }),
+      TransitionedOut: () => model => ({ model }),
+    })
+  ```
+
+  Tests must use the right generation when they resolve `WaitForPaint` or `WaitForAnimationSettled`, or when they send `EndedAnimation` directly. The generation starts at `0`, and each `show` or `hide` that starts an enter or a leave adds one. For example, the first open is generation `1`, and the close after it is generation `2`. A result with a different generation does not change the Model. `Toast.test.drainEntry` uses the right generations itself, so tests that call it need no change.
+
+- [#1442](https://github.com/foldkit/foldkit/pull/1442) [`5401108`](https://github.com/foldkit/foldkit/commit/5401108272c32b9b06f0175b46eef79bb7f23b43) Thanks [@devinjameson](https://github.com/devinjameson)! - Bump Effect to `4.0.0-rc.117` (from `4.0.0-rc.116`). Foldkit's `effect` peer dependency now requires `4.0.0-rc.117`, and `@foldkit/devtools` pins its `@effect/platform-browser` peer dependency to the same version.
+
+  Pin your Effect packages to `4.0.0-rc.117` to match this release. Use exact pins rather than ranges while Effect v4 is in prerelease:
+
+  ```sh
+  pnpm add effect@4.0.0-rc.117 @effect/platform-browser@4.0.0-rc.117
+  pnpm add -D @effect/vitest@4.0.0-rc.117
+  ```
+
+- [#1293](https://github.com/foldkit/foldkit/pull/1293) [`ca7e573`](https://github.com/foldkit/foldkit/commit/ca7e5731a9f5eb51f3b398038f6964c089ace965) Thanks [@elianiva](https://github.com/elianiva)! - Slider now supports vertical layouts and opt-in edge-aligned thumbs. Set `orientation` to `Vertical` to place `min` at the bottom and `max` at the top, update `aria-orientation`, and map pointer movement along the vertical axis. Existing Sliders remain horizontal and center-aligned by default. Set `thumbAlignment` to `Edge` and provide the rendered `thumbSize` to keep the thumb inside the track and align pointer input with its inset travel.
+
+- [#1294](https://github.com/foldkit/foldkit/pull/1294) [`93afb01`](https://github.com/foldkit/foldkit/commit/93afb016d72a099d7e4332a29e0dc6db909bdee5) Thanks [@elianiva](https://github.com/elianiva)! - Add headless `Meter` and `Progress` views with accessible labeling, normalized ranges, determinate and indeterminate progress states, and data attributes for consumer styling.
+
+### Patch Changes
+
+- Rebuild with the release's shared tooling configuration so the published packages and website use the same build inputs.
+
+- [#1467](https://github.com/foldkit/foldkit/pull/1467) [`1a3dd68`](https://github.com/foldkit/foldkit/commit/1a3dd68616dcc00e8070f817f84510e69eeca24a) Thanks [@devinjameson](https://github.com/devinjameson)! - Upgrade compatible runtime, build, and test dependencies across the workspace.
+
 ## 0.163.0
 
 ### Minor Changes
