@@ -37,10 +37,11 @@ export const ExampleSlug = Schema.Literals([
   'ui-showcase',
   'personal-blog',
   'livestore',
+  'electric-sql',
 ])
 export type ExampleSlug = typeof ExampleSlug.Type
 
-export type LivePreview = 'Spa' | 'Prerendered' | 'PlaygroundOnly'
+export type LivePreview = 'Spa' | 'Prerendered' | 'PlaygroundOnly' | 'LocalOnly'
 
 export type ExampleMeta = Readonly<{
   slug: ExampleSlug
@@ -392,6 +393,16 @@ export const examples: ReadonlyArray<ExampleMeta> = [
     tags: ['Storage', 'Subscriptions', 'Commands', 'Third-Party Library'],
     hasRouting: false,
     livePreview: 'Spa',
+  },
+  {
+    slug: 'electric-sql',
+    title: 'ElectricSQL',
+    description:
+      'The LiveStore task list with Postgres as its source of truth. The Model projects optimistic mutations over ElectricSQL Shape snapshots, Commands persist them through the application backend, and transaction IDs settle them when Postgres changes sync back.',
+    difficulty: 'Advanced',
+    tags: ['Storage', 'Subscriptions', 'Commands', 'Third-Party Library'],
+    hasRouting: false,
+    livePreview: 'LocalOnly',
   },
 ]
 

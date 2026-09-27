@@ -20,6 +20,8 @@ const webServerCommand = (slug: string): string => {
     // NOTE: This browser gate runs the standalone Vite config that Launch
     // Playground substitutes for the monorepo config.
     return `pnpm -C ../../examples/livestore exec vite --config vite.config.playground.ts --port ${PORT} --strictPort`
+  } else if (slug === 'electric-sql') {
+    return `pnpm -C ../../examples/electric-sql backend:clear && pnpm -C ../../examples/electric-sql backend:up && pnpm -C ../../examples/electric-sql migrate && pnpm -C ../../examples/electric-sql exec vite --port ${PORT} --strictPort`
   } else {
     return `pnpm -C ../../examples/${slug} exec vite --port ${PORT} --strictPort`
   }
